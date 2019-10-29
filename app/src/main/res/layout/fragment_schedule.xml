@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Schedule" >
+    tools:context=".ScheduleFragment" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,6 +29,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <com.github.tlaabs.timetableview.TimetableView
+            android:id="@+id/timetable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:column_count="6"
+            app:cell_height="60dp"
+            app:start_time="4"
+            app:header_title="@array/my_header_title"
+            app:row_count="17" />
     </FrameLayout>
 </LinearLayout>

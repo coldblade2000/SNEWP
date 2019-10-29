@@ -4,22 +4,35 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.tlaabs.timetableview.Schedule;
+import com.github.tlaabs.timetableview.Time;
+import com.github.tlaabs.timetableview.TimetableView;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Schedule.OnFragmentInteractionListener} interface
+ * {@link ScheduleFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Schedule#newInstance} factory method to
+ * Use the {@link ScheduleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Schedule extends Fragment {
+public class ScheduleFragment extends Fragment {
+    //https://github.com/tlaabs/TimetableView
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,7 +44,7 @@ public class Schedule extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Schedule() {
+    public ScheduleFragment() {
         // Required empty public constructor
     }
 
@@ -41,11 +54,11 @@ public class Schedule extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Schedule.
+     * @return A new instance of fragment ScheduleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Schedule newInstance(String param1, String param2) {
-        Schedule fragment = new Schedule();
+    public static ScheduleFragment newInstance(String param1, String param2) {
+        ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,15 +79,47 @@ public class Schedule extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_schedule, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        TimetableView timetable = view.findViewById(R.id.timetable);
+
+
+        timetable.add(debugSchedule());
+
+        timetable.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
+            @Override
+            public void OnStickerSelected(int idx, ArrayList<com.github.tlaabs.timetableview.Schedule> schedules) {
+
+            }
+        });
     }
+
+    private ArrayList<Schedule> debugSchedule(){
+        String[] names = {"Daniela Espinosa", "Pablo Brito", "David Beckham", "Tim Berners-lee"};
+        Pair<Integer, Integer>[] startTimes = new Pair[]{new Pair<>(4, 30), new Pair<>(7, 30), new Pair<>(14, 50), new Pair<>(12, 0)};
+
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        for (int i = 0, namesLength = names.length; i < namesLength; i++) {
+            String s = names[i];
+            Random random = new Random();
+            /*int hour = random.nextInt(13) + 6;
+            int minutes = random.nextInt(3) * 20 + 10;*/
+            int day = random.nextInt(5);
+            Schedule schedule = new Schedule();
+            schedule.setClassTitle(s);
+            schedule.setStartTime(new Time(startTimes[i].first, startTimes[i].second));
+            schedule.setDay(day);
+            schedule.setEndTime(startTimes[i].second >= 40 ? new Time(startTimes[i].first + 1, startTimes[i].second - 40)
+                    : new Time(startTimes[i].first, startTimes[i].second + 20));
+            schedules.add(schedule);
+        }
+        return schedules;
+    }
+
 
     @Override
     public void onAttach(Context context) {
