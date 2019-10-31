@@ -13,4 +13,5 @@
         <item>Vie</item>
         <item>Sab</item>
     </string-array>
+    <string name="title_activity_new_apunte_form">NewApunteForm</string>
 </resources>
