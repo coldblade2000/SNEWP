@@ -44,6 +44,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
     implementation 'com.google.firebase:firebase-firestore:21.2.1'
+    implementation 'com.google.android.libraries.places:places:2.0.0'
+    implementation 'com.google.android.libraries.places:places-compat:2.0.0'
+
+
 
     implementation 'com.github.tlaabs:TimetableView:1.0.3-fx1'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'

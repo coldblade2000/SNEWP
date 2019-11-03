@@ -26,6 +26,8 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener {
@@ -146,8 +148,20 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                 showSnackbar(R.string.unknown_error)
                 Log.e(FragmentActivity.TAG, "Sign-in error: ", response.error)*/
             }
-        }else if (requestCode == Companion.RC_ADD_APUNTE){
+        }else if (requestCode == RC_ADD_APUNTE && resultCode == APUNTE_SUCCESS){
+            val extras = data!!.extras!!
+            val timeFormat = SimpleDateFormat("K:mm a", Locale.US)
+            val time = timeFormat.parse(extras.getString("hora")!!)
 
+            //TODO Finish location implementation
+            //https://developers.google.com/places/android-sdk/client-migration
+            //https://codelabs.developers.google.com/codelabs/location-places-android/index.html?index=..%2F..index#0
+            //https://guides.codepath.com/android/google-maps-fragment-guide
+            var apunteNew = Apunte(extras.getString("name"),
+                    accountid,
+                    extras.getString("celular"),
+                    time.hours, time.minutes
+                    )
         }
     }
 
