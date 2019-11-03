@@ -14,4 +14,5 @@
         <item>Sab</item>
     </string-array>
     <string name="title_activity_new_apunte_form">NewApunteForm</string>
+    <string name="lugar_de_partida">Lugar de partida*</string>
 </resources>

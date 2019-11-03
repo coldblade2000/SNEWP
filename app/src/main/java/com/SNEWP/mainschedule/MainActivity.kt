@@ -29,7 +29,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile
 
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener {
-    private val RC_SIGN_IN = 123
     override fun onCreate(savedInstanceState: Bundle?) {
         // https://github.com/mikepenz/MaterialDrawer
 
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                                     AuthUI.IdpConfig.EmailBuilder().build(),
                                     AuthUI.IdpConfig.PhoneBuilder().build()
                             ))
-                            .build(), RC_SIGN_IN)
+                            .build(), Companion.RC_SIGN_IN)
         }
 
         val header = AccountHeaderBuilder()
@@ -97,8 +96,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            startActivityForResult(Intent(this, NewApunteForm::class.java), Companion.RC_ADD_APUNTE)
         }
     }
 
@@ -121,9 +119,9 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
     }
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Companion.RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
 
             // Successfully signed in
@@ -135,7 +133,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
             } else {
                 // Sign in failed
 
-                if (response == null) {
+                /*if (response == null) {
                     // User pressed back button
 
                     showSnackbar(R.string.sign_in_cancelled)
@@ -146,12 +144,21 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                     return
                 }
                 showSnackbar(R.string.unknown_error)
-                Log.e(FragmentActivity.TAG, "Sign-in error: ", response.error)
+                Log.e(FragmentActivity.TAG, "Sign-in error: ", response.error)*/
             }
+        }else if (requestCode == Companion.RC_ADD_APUNTE){
+
         }
-    }*/
+    }
 
     override fun onFragmentInteraction(uri: Uri) {
 
+    }
+
+    companion object {
+        const val RC_ADD_APUNTE = 5
+        const val RC_SIGN_IN = 123
+        const val APUNTE_SUCCESS = 1
+        const val APUNTE_FAILURE = -1
     }
 }
