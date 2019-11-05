@@ -4,6 +4,8 @@ import android.location.Location;
 import android.provider.ContactsContract;
 import android.util.Pair;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Apunte {
     private String name;
     private String accountId;
@@ -12,15 +14,18 @@ public class Apunte {
     private Location location;
     private String plates;
     private String phoneNumber;
+    private double lat;
+    private double lng;
     private String route;
 
-    public Apunte(String name, String accountId, String phoneNumber, int startHour, int startMinute, Location location){
+    public Apunte(String name, String accountId, String phoneNumber, int startHour, int startMinute, double lat, double lng){
         this.name = name;
         this.accountId = accountId;
-        this.phoneNumber = phoneNumber.trim().replaceAll("\\s+","");;
+        this.phoneNumber = phoneNumber.trim().replaceAll("\\s+","");
+        this.lat = lat;
+        this.lng = lng;
         this.startHour = startHour;
         this.startMinute = startMinute;
-        this.location = location;
     }
 
 
@@ -48,6 +53,9 @@ public class Apunte {
         return startHour;
     }
 
+    public LatLng getLatLng(){
+        return new LatLng(lat, lng);
+    }
 
     public void setStartHour(int startHour) {
         this.startHour = startHour;

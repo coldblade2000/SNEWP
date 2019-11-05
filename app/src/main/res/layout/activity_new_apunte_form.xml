@@ -7,6 +7,45 @@
     android:layout_height="match_parent"
     tools:context=".NewApunteForm">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        >
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/apuntesStyle"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@id/apunteToolbar">
+
+            <ImageView
+                android:id="@+id/ivApuntesHead"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/imagen_de_conductor"
+                android:scaleType="fitXY"
+                android:fitsSystemWindows="true"
+                android:src="@drawable/drivinghead"
+                app:layout_collapseMode="parallax" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/apunteToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:menu="@menu/apunte_menu"
+                app:title="Añadir apunte"
+                app:titleTextColor="@color/md_white_1000" />
+
+
+
+
+            <!--                app:layout_scrollFlags="scroll|enterAlways"-->
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,16 +54,90 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiANombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etANombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_person_outline_black_24dp"
+
+                    android:drawablePadding="4dp"
+                    android:hint="Nombre*"
+                    android:inputType="textPersonName"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiACelular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etACelular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:drawableStart="@drawable/ic_phone_black_24dp"
+                    android:drawablePadding="4dp"
+                    android:hint="Celular*"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiAHora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAHora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_access_time_black_24dp"
+                    android:drawablePadding="4dp"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Hora*"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clAPartida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiAPartida"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ivAMap"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAPartida"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:drawableStart="@drawable/ic_location_on_black_24dp"
+                        android:drawablePadding="4dp"
+                        android:hint="@string/lugar_de_partida"
+                        android:inputType="none"
+
+                        android:lines="2"
+                        android:singleLine="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
                     android:id="@+id/ivAMap"
@@ -38,85 +151,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tiAPartida"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tiAPartida"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ivAMap"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etAPartida"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:drawablePadding="4dp"
-                        android:drawableStart="@drawable/ic_location_on_black_24dp"
-                        android:hint="@string/lugar_de_partida"
-                        android:inputType="none"
-
-                        android:lines="2"
-                        android:singleLine="false" />
-                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiACelular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etACelular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_phone_black_24dp"
-                    android:hint="Celular*"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiAHora"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etAHora"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_access_time_black_24dp"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Hora*"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiANombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etANombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-
-                    android:drawableStart="@drawable/ic_person_outline_black_24dp"
-                    android:hint="Nombre*"
-                    android:inputType="textPersonName"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiAPlaca"
@@ -127,8 +162,8 @@
                     android:id="@+id/etAPlaca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
                     android:drawableStart="@drawable/ic_plates2"
+                    android:drawablePadding="4dp"
                     android:hint="Placa"
                     android:inputType="textPersonName"
                     android:maxLength="6" />
@@ -143,8 +178,8 @@
                     android:id="@+id/etARuta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
                     android:drawableStart="@drawable/ic_path_black_24dp"
+                    android:drawablePadding="4dp"
                     android:hint="La ruta que tomaras"
                     android:inputType="textPersonName"
                     android:singleLine="false" />
@@ -155,40 +190,6 @@
 
 
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="@color/primary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:id="@+id/ivApuntesHead"
-                android:layout_width="match_parent"
-                android:layout_height="192dp"
-                android:contentDescription="Imagen de conductor"
-                android:scaleType="fitXY"
-                android:src="@mipmap/drivinghead"
-                app:layout_collapseMode="parallax" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/apunteToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:title="Hello"
-                app:titleTextColor="@color/md_white_1000" />
-
-
-            <!--                app:layout_scrollFlags="scroll|enterAlways"-->
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

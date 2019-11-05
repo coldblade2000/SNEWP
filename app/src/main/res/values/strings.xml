@@ -15,4 +15,7 @@
     </string-array>
     <string name="title_activity_new_apunte_form">NewApunteForm</string>
     <string name="lugar_de_partida">Lugar de partida*</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="imagen_de_conductor">Imagen de conductor</string>
 </resources>

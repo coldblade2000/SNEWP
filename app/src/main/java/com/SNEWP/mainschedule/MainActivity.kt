@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val auth = FirebaseAuth.getInstance()
+        val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
         var profileName = "Guest"
         var identity = "0123@gmail.com"
@@ -157,17 +157,21 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
             //https://developers.google.com/places/android-sdk/client-migration
             //https://codelabs.developers.google.com/codelabs/location-places-android/index.html?index=..%2F..index#0
             //https://guides.codepath.com/android/google-maps-fragment-guide
-            var apunteNew = Apunte(extras.getString("name"),
-                    accountid,
+            var apunteNew = Apunte(
+                    extras.getString("name"),
+                    FirebaseAuth.getInstance().currentUser?.uid,
                     extras.getString("celular"),
-                    time.hours, time.minutes
+                    time.hours, time.minutes,
+                    extras.getDouble("lat"),
+                    extras.getDouble("lng")
                     )
+
         }
     }
-
     override fun onFragmentInteraction(uri: Uri) {
 
     }
+
 
     companion object {
         const val RC_ADD_APUNTE = 5
