@@ -166,6 +166,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                     extras.getDouble("lng")
                     )
 
+
         }
     }
     override fun onFragmentInteraction(uri: Uri) {

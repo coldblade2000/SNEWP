@@ -5,6 +5,9 @@ import android.provider.ContactsContract;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.HashMap;
 
 public class Apunte {
     private String name;
@@ -26,6 +29,21 @@ public class Apunte {
         this.lng = lng;
         this.startHour = startHour;
         this.startMinute = startMinute;
+    }
+    public Apunte(HashMap<String, Object> map){
+        name = (String) map.get("name");
+        accountId = (String) map.get("");
+        phoneNumber = (String) map.get("");
+        GeoPoint point = (GeoPoint) map.get("location");
+        lat = point.getLatitude();
+        lng = point.getLongitude();
+        String[] time = ((String) map.get("time")).split(":");
+        startHour = Integer.valueOf(time[0]);
+        startMinute = Integer.valueOf(time[1]);
+        if(map.get("route") != null)
+            route = (String) map.get("route");
+        if(map.get("plates") != null)
+            plates = (String) map.get("plates");
     }
 
 
@@ -104,5 +122,15 @@ public class Apunte {
 
     public String getAccountId() {
         return accountId;
+    }
+    public HashMap<String, Object> getHashMap(){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("accountId", accountId);
+        map.put("time", startHour+":"+startMinute);
+        map.put("location", new GeoPoint(lat, lng));
+        map.put("phoneNumber",phoneNumber );
+        map.put("plates", plates);
+        map.put("route",route );
+        return map;
     }
 }

@@ -144,6 +144,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:backgroundTint="#EA80FC"
                     android:backgroundTintMode="multiply"
                     android:src="@drawable/ic_map_black_24dp"

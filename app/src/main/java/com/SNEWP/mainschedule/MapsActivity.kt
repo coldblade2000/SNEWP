@@ -8,9 +8,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -21,14 +18,21 @@ import android.location.Location
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.synthetic.main.activity_maps.*
+import kotlin.collections.ArrayList
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+
+    lateinit var db :FirebaseFirestore
 
     private var mLocationPermissionGranted: Boolean = false
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: Int = 4
@@ -41,17 +45,53 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var marker : Marker
 
+    private val cedritos170 = arrayOf(LatLng(4.748306, -74.023144), LatLng(4.711548, -74.029041),LatLng(4.718317, -74.054795), LatLng(4.751400, -74.046395))
+    private val sanjosedebavaria = arrayOf(  LatLng(4.770971, -74.082612), LatLng(4.752712, -74.052672), LatLng(4.765274, -74.053387), LatLng(4.772080, -74.062873))
+    private val colinamazuren = arrayOf(LatLng(4.751158, -74.045376),LatLng(4.719025, -74.052082),LatLng(4.727821, -74.074787),LatLng(4.758871, -74.073957))
+//    private val polys = arrayOf(cedritos170, sanjosedebavaria, colinamazuren)
+    private val polysFake = arrayOf(cedritos170, sanjosedebavaria, colinamazuren)
+//    private var polys : ArrayList<Zona> = arrayListOf()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         tbMaps.title = "Escoge punto de partida"
         setSupportActionBar(tbMaps)
 
+        db = FirebaseFirestore.getInstance()
+        db.collection("zonas")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (doc in result){
+                        var map = doc.data
+                        val zona = Zona(
+                                map["nombres"] as ArrayList<String>,
+                                doc.id,
+                                arrayListOf(),
+                                map["puntos"] as ArrayList<GeoPoint>,
+                                Zona.getMatColor(applicationContext, "500", 255)
+                        )
+
+                        mMap.addPolygon(with(PolygonOptions()){
+                            zona.color
+                            strokeWidth(2F)
+                            clickable(true)
+                            addAll(zona.latLngPoints)
+                        }).tag=zona.nombresAsString
+//                        polys.add(zona)
+                    }
+                }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    }
+
+    private fun getZonas(){
+
     }
 
     /**
@@ -75,6 +115,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isMyLocationButtonEnabled = true
         getDeviceLocation()
         marker = mMap.addMarker(MarkerOptions().position(mMap.cameraPosition.target).draggable(false))
+
+        /*for( place in polys){
+            mMap.addPolygon(with(PolygonOptions()){
+                fillColor(Zona.getMatColor(applicationContext, "500"))
+                strokeWidth(2F)
+                clickable(true)
+                addAll(place.latLngPoints)
+            }).tag="Hello"
+        }*/
+        mMap.setOnPolygonClickListener{polygon: Polygon? ->
+            Toast.makeText(this, ""+polygon?.tag, Toast.LENGTH_SHORT).show()
+        }
         mMap.setOnCameraMoveListener {
             marker.position = mMap.cameraPosition.target
             lat = marker.position.latitude
