@@ -64,22 +64,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .get()
                 .addOnSuccessListener { result ->
                     for (doc in result){
-                        var map = doc.data
+                        val map = doc.data
                         val zona = Zona(
                                 map["nombres"] as ArrayList<String>,
                                 doc.id,
                                 arrayListOf(),
                                 map["puntos"] as ArrayList<GeoPoint>,
-                                Zona.getMatColor(applicationContext, "500", 255)
+                                Zona.getMatColor(applicationContext, "500")
                         )
 
                         mMap.addPolygon(with(PolygonOptions()){
-                            zona.color
+                            fillColor(zona.color)
                             strokeWidth(2F)
                             clickable(true)
                             addAll(zona.latLngPoints)
                         }).tag=zona.nombresAsString
-//                        polys.add(zona)
                     }
                 }
 
@@ -90,9 +89,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    private fun getZonas(){
-
-    }
 
     /**
      * Manipulates the map once available.
@@ -107,23 +103,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-
+        getDeviceLocation()
+        //TODO fix crash
         val bitmapDraw = BitmapFactory.decodeResource(resources, R.drawable.uniandes)
         mMap.addMarker(MarkerOptions().position(Companion.uniandes).title("U. de Los Andes")
                 .icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDraw, 75, 75, false))))
         mMap.isMyLocationEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = true
-        getDeviceLocation()
         marker = mMap.addMarker(MarkerOptions().position(mMap.cameraPosition.target).draggable(false))
 
-        /*for( place in polys){
-            mMap.addPolygon(with(PolygonOptions()){
-                fillColor(Zona.getMatColor(applicationContext, "500"))
-                strokeWidth(2F)
-                clickable(true)
-                addAll(place.latLngPoints)
-            }).tag="Hello"
-        }*/
+
         mMap.setOnPolygonClickListener{polygon: Polygon? ->
             Toast.makeText(this, ""+polygon?.tag, Toast.LENGTH_SHORT).show()
         }

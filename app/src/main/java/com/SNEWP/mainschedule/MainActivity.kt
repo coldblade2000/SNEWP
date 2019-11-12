@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
         var profileName = "Guest"
         var identity = "0123@gmail.com"
         val user = FirebaseAuth.getInstance().currentUser
