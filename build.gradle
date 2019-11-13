@@ -1,5 +1,6 @@
 ext {
     var = 'C:\\Users\\diego\\StudioProjects\\SNEWP\\debug.keystore'
+    maps_api = 'AIzaSyBVmEDcz-jdebhbjgkU9sqNow-B7tyw5mI'
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {

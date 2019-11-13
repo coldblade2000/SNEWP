@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
@@ -22,9 +21,9 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_apunte_form)
-        apunteToolbar.setTitleTextColor(Color.WHITE)
-        apunteToolbar.title = "Añadir apunte"
-        setSupportActionBar(apunteToolbar)
+        EditToolbar.setTitleTextColor(Color.WHITE)
+        EditToolbar.title = "Añadir apunte"
+        setSupportActionBar(EditToolbar)
 
 
         supportActionBar?.setHomeButtonEnabled(true);
@@ -40,7 +39,7 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
             startActivityForResult(Intent(this, MapsActivity::class.java), REQUEST_MAP)
         }
 
-        fab.setOnClickListener {
+        fabEdit.setOnClickListener {
             addApunte()
         }
     }
@@ -65,7 +64,7 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         }
 
         if(exception){
-            Snackbar.make(clApunte, "Te falto completar los campos requeridos", Snackbar.LENGTH_SHORT)
+            Snackbar.make(clEdit, "Te falto completar los campos requeridos", Snackbar.LENGTH_SHORT)
         }else{
             val intentResult = Intent()
             intentResult.putExtra("name", etANombre.text)

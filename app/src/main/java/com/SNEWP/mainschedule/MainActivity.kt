@@ -4,20 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -31,6 +27,7 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // https://github.com/mikepenz/MaterialDrawer
 
@@ -41,44 +38,34 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
         var profileName = "Guest"
         var identity = "0123@gmail.com"
-        val user = FirebaseAuth.getInstance().currentUser
+
+        val auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
 
 
         if (user != null) {
             // already signed in
-            profileName = user.displayName!!
+            profileName = if(user.displayName.isNullOrEmpty()) "Cuenta Anonima" else user.displayName!!
             if(user.phoneNumber!=null)
-                identity = user.phoneNumber!!
-            if(user.email!=null)
-                identity = user.email!!
+                identity = if(user.phoneNumber.isNullOrEmpty()) "Anonimo" else user.phoneNumber!!
 
 
         } else {
-            // not signed in
-            startActivityForResult(
-                    // Get an instance of AuthUI based on the default app
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(listOf(
-                                    AuthUI.IdpConfig.GoogleBuilder().build(),
-                                    AuthUI.IdpConfig.EmailBuilder().build(),
-                                    AuthUI.IdpConfig.PhoneBuilder().build()
-                            ))
-                            .build(), Companion.RC_SIGN_IN)
+            startActivityForResult(Intent(this, PathChoserActivity::class.java), RC_SPLASH)
         }
 
         val header = AccountHeaderBuilder()
                 .withActivity(this)
+                .withOnAccountHeaderListener { view: View, iProfile: IProfile<Any>, b: Boolean ->
+
+                    true
+                }
                 .addProfiles(
                         ProfileDrawerItem().withName(profileName).withEmail(identity)
-                )
-                .withOnAccountHeaderListener(object : AccountHeader.OnAccountHeaderListener {
-                    override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
-                        return false
-                    }
-                }).build()
 
-        DrawerBuilder()
+                ).build()
+
+        val drawer = DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(header)
@@ -94,7 +81,8 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                 })
                 .build()
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
+
+        val fab = findViewById<FloatingActionButton>(R.id.fabEdit)
         fab.setOnClickListener { view ->
             startActivityForResult(Intent(this, NewApunteForm::class.java), Companion.RC_ADD_APUNTE)
         }
@@ -111,11 +99,16 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
+        super.onOptionsItemSelected(item)
 
-
-        return if (id == R.id.action_settings) {
-            true
-        } else super.onOptionsItemSelected(item)
+        if (id == R.id.action_settings) {
+            return true
+        } else if (id == R.id.signout){
+            AuthUI.getInstance().signOut(this).addOnSuccessListener { Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show() }
+            finishAndRemoveTask()
+            return true
+        }
+        return true
 
     }
 
@@ -128,8 +121,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
 
             if (resultCode == Activity.RESULT_OK) {
-                /*startActivity(SignedInActivity.createIntent(this, response))
-                finish()*/
+                val user = FirebaseAuth.getInstance().currentUser
             } else {
                 // Sign in failed
 
@@ -174,6 +166,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
     companion object {
         const val RC_ADD_APUNTE = 5
+        const val RC_SPLASH = 42
         const val RC_SIGN_IN = 123
         const val APUNTE_SUCCESS = 1
         const val APUNTE_FAILURE = -1
