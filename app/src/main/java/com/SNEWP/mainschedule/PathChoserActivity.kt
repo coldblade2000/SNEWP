@@ -7,14 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_path_choser.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PathChoserActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -73,13 +70,15 @@ class PathChoserActivity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MainActivity.RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-            // Successfully signed i
+            // Successfully signed in
             if (resultCode == Activity.RESULT_OK) {
-                val user = FirebaseAuth.getInstance().currentUser
-                val intent = Intent()
-                intent.putExtra("user", user)
-                setResult(LOGGED_IN_SUCCESS, intent)
-                finish()
+
+                val newIntent = Intent(this, ProfileEditActivity::class.java)
+                newIntent.putExtra("requestcode", ProfileEditActivity.PEA_CREATE)
+                newIntent.putExtra("celular", response?.phoneNumber)
+
+
+                startActivityForResult(newIntent, ProfileEditActivity.PEA_CREATE)
             } else {
                 // Sign in failed
 
@@ -99,9 +98,24 @@ class PathChoserActivity : AppCompatActivity(), View.OnClickListener {
                 setResult(LOGGED_IN_FAILURE, intent)
 
             }
+        }else if (requestCode == ProfileEditActivity.PEA_CREATE){
+            if(resultCode == ProfileEditActivity.PEA_CREATE_SUCCESS && data != null){
+                val intentResult = Intent()
+                intentResult.putExtra("name", data.getStringExtra("name"))
+                intentResult.putExtra("celular", data.getStringExtra("celular"))
+                intentResult.putExtra("lat", data.getDoubleExtra("lat", -1.0))
+                intentResult.putExtra("lng", data.getDoubleExtra("lng", -1.0))
+                intentResult.putExtra("placa", data.getStringExtra("placa"))
+                intentResult.putExtra("ruta", data.getStringExtra("ruta"))
+
+
+                setResult(NEW_PROFILE_SUCCESS, intentResult)
+                finish()
+            }
         }
     }
     companion object{
+        const val NEW_PROFILE_SUCCESS = 1
         const val LOGGED_IN_SUCCESS = 8
         const val LOGGED_IN_FAILURE = 9
         const val ANON_SUCCESS = 5

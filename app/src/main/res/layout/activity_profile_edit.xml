@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:theme="@style/apuntesStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@id/EditToolbar">
+            app:toolbarId="@id/editToolbar">
 
             <ImageView
                 android:id="@+id/ivEditHead"
@@ -31,7 +31,7 @@
                 app:layout_collapseMode="parallax" />
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/EditToolbar"
+                android:id="@+id/editToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
@@ -72,7 +72,7 @@
 
                     android:drawablePadding="4dp"
                     android:hint="Nombre*"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clAPartida"
+                android:id="@+id/clEPartida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -103,7 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ivAMap"
+                    app:layout_constraintEnd_toStartOf="@id/ivEMap"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -122,7 +122,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
-                    android:id="@+id/ivAMap"
+                    android:id="@+id/ivEMap"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_marginEnd="16dp"
@@ -164,7 +164,7 @@
                     android:drawableStart="@drawable/ic_path_black_24dp"
                     android:drawablePadding="4dp"
                     android:hint="La ruta que sueles tomar"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapSentences"
                     android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.GeoPoint
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 
 import kotlinx.android.synthetic.main.activity_new_apunte_form.*
@@ -17,13 +17,13 @@ import java.util.*
 
 
 class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
-    private lateinit var lugarPartida: LatLng
+    private lateinit var lugarPartida: GeoPoint
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_apunte_form)
-        EditToolbar.setTitleTextColor(Color.WHITE)
-        EditToolbar.title = "Añadir apunte"
-        setSupportActionBar(EditToolbar)
+        apunteToolbar.setTitleTextColor(Color.WHITE)
+        apunteToolbar.title = "Añadir apunte"
+        setSupportActionBar(apunteToolbar)
 
 
         supportActionBar?.setHomeButtonEnabled(true);
@@ -39,7 +39,7 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
             startActivityForResult(Intent(this, MapsActivity::class.java), REQUEST_MAP)
         }
 
-        fabEdit.setOnClickListener {
+        fabApunte.setOnClickListener {
             addApunte()
         }
     }
@@ -64,7 +64,7 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         }
 
         if(exception){
-            Snackbar.make(clEdit, "Te falto completar los campos requeridos", Snackbar.LENGTH_SHORT)
+            Snackbar.make(clApunte, "Te falto completar los campos requeridos", Snackbar.LENGTH_SHORT)
         }else{
             val intentResult = Intent()
             intentResult.putExtra("name", etANombre.text)
@@ -120,8 +120,8 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         when(requestCode){
             REQUEST_MAP -> {
                 if(resultCode == MapsActivity.LOC_SUCCESS && data != null){
-                    lugarPartida = LatLng(data.getDoubleExtra("lat", 0.0),
-                                          data.getDoubleExtra("lng", 0.0))
+                    lugarPartida = GeoPoint(data.getDoubleExtra("lat", 0.0),
+                    data.getDoubleExtra("lng", 0.0))
                     etAPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
                 }
             }
