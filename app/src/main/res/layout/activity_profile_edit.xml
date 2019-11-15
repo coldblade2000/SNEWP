@@ -62,6 +62,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiENombre"
                 android:layout_width="match_parent"
+                app:hintTextAppearance="@style/TextLabel"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -79,6 +80,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiECelular"
                 android:layout_width="match_parent"
+                app:hintTextAppearance="@style/TextLabel"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -102,6 +104,8 @@
                     android:id="@+id/tiEPartida"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:clickable="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/ivEMap"
                     app:layout_constraintStart_toStartOf="parent"
@@ -114,9 +118,10 @@
 
                         android:drawableStart="@drawable/ic_location_on_black_24dp"
                         android:drawablePadding="4dp"
-                        android:hint="Lugar tipico de partida*"
-                        android:inputType="none"
+                        android:enabled="false"
+                        android:hint="Lugar tipico de partida"
 
+                        android:inputType="none"
                         android:lines="2"
                         android:singleLine="false" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -139,6 +144,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiEPlaca"
                 android:layout_width="match_parent"
+                app:hintTextAppearance="@style/TextLabel"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -155,16 +161,19 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiERuta"
                 android:layout_width="match_parent"
+                app:hintTextAppearance="@style/TextLabel"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etERuta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:drawableStart="@drawable/ic_path_black_24dp"
                     android:drawablePadding="4dp"
                     android:hint="La ruta que sueles tomar"
                     android:inputType="textPersonName|textCapSentences"
+                    android:selectAllOnFocus="true"
                     android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
 

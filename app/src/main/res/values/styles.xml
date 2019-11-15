@@ -18,9 +18,19 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="colorControlActivated">?attr/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccentDark</item>
         <item name="colorControlNormal">@android:color/white</item>
 
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorHighlight">@color/colorAccentDark</item>
+        <item name="android:textColorHint">@color/colorAccentDark</item>
+        <item name="android:textColor">@color/colorAccentDark</item>
+        <item name="colorControlActivated">@color/colorAccentDark</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

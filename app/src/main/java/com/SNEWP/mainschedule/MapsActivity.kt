@@ -70,7 +70,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 doc.id,
                                 arrayListOf(),
                                 map["puntos"] as ArrayList<GeoPoint>,
-                                Zona.getMatColor(applicationContext, "500")
+                                Zona.getMatColor(applicationContext, "500", 68)
                         )
 
                         mMap.addPolygon(with(PolygonOptions()){
@@ -101,7 +101,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
         // Add a marker in Sydney and move the camera
         getDeviceLocation()
         //TODO fix crash

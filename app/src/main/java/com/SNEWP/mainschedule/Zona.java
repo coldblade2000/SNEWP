@@ -30,7 +30,7 @@ public class Zona {
         this.color = color;
     }
 
-    public static int getMatColor(Context context, String typeColor)
+    public static int getMatColor(Context context, String typeColor, int alpha)
     {
         int returnColor = Color.BLACK;
         int arrayId = context.getResources().getIdentifier("mdcolor_" + typeColor, "array", context.getPackageName());
@@ -42,8 +42,8 @@ public class Zona {
             returnColor = colors.getColor(index, Color.BLACK);
             colors.recycle();
         }
-//        return ColorUtils.setAlphaComponent(returnColor, alpha);
-        return returnColor;
+        return ColorUtils.setAlphaComponent(returnColor, alpha);
+//        return returnColor;
     }
 
     public ArrayList<LatLng> getLatLngPoints(){

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.GeoPoint
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
@@ -32,8 +33,9 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
 
 
         etAHora.setOnClickListener {
-            TimePickerDialog.newInstance(this, 8, 0,  false)
-                    .show(supportFragmentManager, "Timepickerdialog")
+            val picker = TimePickerDialog.newInstance(this, 8, 0,  false)
+            picker.accentColor = ResourcesCompat.getColor(resources, R.color.colorPrimary, theme)
+            picker.show(supportFragmentManager, "Timepickerdialog")
         }
         clAPartida.setOnClickListener{
             startActivityForResult(Intent(this, MapsActivity::class.java), REQUEST_MAP)
