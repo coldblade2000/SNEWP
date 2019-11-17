@@ -141,7 +141,6 @@
                         android:enabled="false"
                         android:hint="@string/lugar_de_partida"
                         android:inputType="none"
-                        android:lines="2"
                         android:singleLine="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -15,6 +15,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 
 import kotlinx.android.synthetic.main.activity_new_apunte_form.*
 import java.lang.Exception
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,7 +48,9 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                             etAPlaca.setText(""+doc["placa"])
                             etARuta.setText(""+doc["ruta"])
                             lugarPartida = doc["partida"] as GeoPoint
-                            etAPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
+                            etAPartida.setText(String.format("%s, %s",
+                                    lugarPartida.latitude.toString().substring(0,6),
+                                    lugarPartida.longitude.toString().substring(0,7)))
                             break
                         }
                     }
@@ -148,15 +151,19 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                 if(resultCode == MapsActivity.LOC_SUCCESS && data != null){
                     lugarPartida = GeoPoint(data.getDoubleExtra("lat", 0.0),
                     data.getDoubleExtra("lng", 0.0))
-                    etAPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
 
                     zonasID = data.getStringArrayListExtra("zonasID")!!
                     zonasTags = data.getStringArrayListExtra("zonasTags")!!
-                    var newString = String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude)
-                    for(i in 0 until zonasID.size){
-                        newString = newString+zonasTags+"\n"
+
+                    val strBuild = StringBuilder()
+
+                    strBuild.append(String.format("%s, %s \n",
+                            lugarPartida.latitude.toString().substring(0,6),
+                            lugarPartida.longitude.toString().substring(0,7)))
+                    for(tag in zonasTags){
+                        strBuild.appendln(tag)
                     }
-                    etAPartida.setText(newString.trim())
+                    etAPartida.setText(strBuild.toString())
                 }
             }
         }

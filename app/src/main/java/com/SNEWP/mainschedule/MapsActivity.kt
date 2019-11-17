@@ -160,7 +160,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ZonasAdapter.mapsI
             val zonasTags = arrayListOf<String>()
             zonasAdapter.checkedZones.forEachIndexed{i,zone ->
                 zonasIDs.add(zone.zonaID)
-                zonasIDs.add(zone.nombresAsString)
+                zonasTags.add(zone.nombresAsString)
             }
             val newIntent = Intent()
             newIntent.putExtra("lat", lat)

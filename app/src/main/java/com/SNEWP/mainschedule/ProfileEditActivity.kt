@@ -11,6 +11,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.synthetic.main.activity_profile_edit.*
+import java.lang.StringBuilder
 
 class ProfileEditActivity : AppCompatActivity() {
     lateinit var lugarPartida : GeoPoint
@@ -57,7 +58,9 @@ class ProfileEditActivity : AppCompatActivity() {
                             etEPlaca.setText(""+doc["placa"])
                             etERuta.setText(""+doc["ruta"])
                             lugarPartida = doc["partida"] as GeoPoint
-                            etEPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
+                            etEPartida.setText(String.format("%s, %s",
+                                    lugarPartida.latitude.toString().substring(0,6),
+                                    lugarPartida.longitude.toString().substring(0,7)))
                             break
                         }
                     }
@@ -78,11 +81,15 @@ class ProfileEditActivity : AppCompatActivity() {
                         data.getDoubleExtra("lng", 0.0))
                 zonasID = data.getStringArrayListExtra("zonasID")!!
                 zonasTags = data.getStringArrayListExtra("zonasTags")!!
-                var newString = String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude)
-                for(i in 0 until zonasID.size){
-                    newString = newString+zonasTags+"\n"
+
+                val strBuild = StringBuilder()
+                strBuild.append(String.format("%s, %s \n",
+                        lugarPartida.latitude.toString().substring(0,6),
+                        lugarPartida.longitude.toString().substring(0,7)))
+                for(tag in zonasTags){
+                    strBuild.appendln(tag)
                 }
-                etEPartida.setText(newString.trim())
+                etEPartida.setText(strBuild.toString())
             }
         }
     }
