@@ -122,7 +122,6 @@
                         android:hint="Lugar tipico de partida"
 
                         android:inputType="none"
-                        android:lines="2"
                         android:singleLine="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
