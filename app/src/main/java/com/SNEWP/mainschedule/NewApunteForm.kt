@@ -8,6 +8,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 
@@ -19,6 +21,9 @@ import java.util.*
 
 class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
     private lateinit var lugarPartida: GeoPoint
+    lateinit var zonasID : ArrayList<String>
+    lateinit var zonasTags : ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_apunte_form)
@@ -30,7 +35,23 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         supportActionBar?.setHomeButtonEnabled(true);
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
+        val user = FirebaseAuth.getInstance().currentUser
+        val db = FirebaseFirestore.getInstance()
+        db.collection("usuarios").get()
+                .addOnSuccessListener { result ->
+                    for(doc in result){
+                        if(doc.id == user?.uid){
 
+                            etANombre.setText(""+ doc["nombre"])
+                            etACelular.setText(user.phoneNumber)
+                            etAPlaca.setText(""+doc["placa"])
+                            etARuta.setText(""+doc["ruta"])
+                            lugarPartida = doc["partida"] as GeoPoint
+                            etAPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
+                            break
+                        }
+                    }
+                }
 
         etAHora.setOnClickListener {
             val picker = TimePickerDialog.newInstance(this, 8, 0,  false)
@@ -38,7 +59,9 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
             picker.show(supportFragmentManager, "Timepickerdialog")
         }
         clAPartida.setOnClickListener{
-            startActivityForResult(Intent(this, MapsActivity::class.java), REQUEST_MAP)
+            val newIntent = Intent(this, MapsActivity::class.java)
+            newIntent.putExtra("requestcode", APUNTE_REQUEST_MAP)
+            startActivityForResult(newIntent, APUNTE_REQUEST_MAP)
         }
 
         fabApunte.setOnClickListener {
@@ -75,6 +98,7 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
             intentResult.putExtra("partida", etAPartida.text)
             intentResult.putExtra("lat", lugarPartida.latitude)
             intentResult.putExtra("lng", lugarPartida.longitude)
+            intentResult.putStringArrayListExtra("zonasID", zonasID)
 
             if(etAPlaca.text != null)
                 intentResult.putExtra("placa", etAPlaca.text)
@@ -120,17 +144,25 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode){
-            REQUEST_MAP -> {
+            APUNTE_REQUEST_MAP -> {
                 if(resultCode == MapsActivity.LOC_SUCCESS && data != null){
                     lugarPartida = GeoPoint(data.getDoubleExtra("lat", 0.0),
                     data.getDoubleExtra("lng", 0.0))
                     etAPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
+
+                    zonasID = data.getStringArrayListExtra("zonasID")!!
+                    zonasTags = data.getStringArrayListExtra("zonasTags")!!
+                    var newString = String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude)
+                    for(i in 0 until zonasID.size){
+                        newString = newString+zonasTags+"\n"
+                    }
+                    etAPartida.setText(newString.trim())
                 }
             }
         }
     }
     companion object{
-        val REQUEST_MAP = 2
+        const val APUNTE_REQUEST_MAP = 2
     }
 
 }

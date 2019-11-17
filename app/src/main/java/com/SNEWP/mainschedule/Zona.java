@@ -5,10 +5,13 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -18,6 +21,8 @@ public class Zona {
     private ArrayList<Apunte> apuntes;
     private ArrayList<GeoPoint> puntos;
     private int color;
+    private Polygon polygon;
+    @Nullable private Boolean isChecked;
 
     public Zona(){}
 
@@ -28,6 +33,7 @@ public class Zona {
         this.setApuntes(apuntes);
         this.setPuntos(puntos);
         this.color = color;
+        isChecked = null;
     }
 
     public static int getMatColor(Context context, String typeColor, int alpha)
@@ -63,10 +69,10 @@ public class Zona {
     }
 
     public String getNombresAsString(){
-        String retString = "";
+        StringBuilder retString = new StringBuilder();
 
         for (int i = nombres.size()-1; i >= 0; i--) {
-            retString = nombres.get(i)+", " +retString;
+            retString.insert(0, nombres.get(i) + ", ");
         }
         return retString.substring(0, retString.length()-2);
     }
@@ -101,5 +107,26 @@ public class Zona {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
+
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
+    }
+
+
+    @Nullable
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(@Nullable Boolean checked) {
+        isChecked = checked;
+    }
+    public void nullChecked(){
+        isChecked = null;
     }
 }

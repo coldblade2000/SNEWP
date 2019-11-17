@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_profile_edit.*
 
 class ProfileEditActivity : AppCompatActivity() {
     lateinit var lugarPartida : GeoPoint
+    lateinit var zonasID : ArrayList<String>
+    lateinit var zonasTags : ArrayList<String>
     var requestCode = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +45,11 @@ class ProfileEditActivity : AppCompatActivity() {
                 .addOnSuccessListener { result ->
                     for(doc in result){
                         if(doc.id == user?.uid){
-                            /**val profileUpdates = UserProfileChangeRequest.Builder()
+                            val profileUpdates = UserProfileChangeRequest.Builder()
                                     .setDisplayName(doc["nombre"] as String)
                                     .build()
 
-                            user.updateProfile(profileUpdates)*/
+                            user.updateProfile(profileUpdates)
 
                             etENombre.setText(""+ doc["nombre"])
                             etECelular.setText(user.phoneNumber)
@@ -56,8 +58,6 @@ class ProfileEditActivity : AppCompatActivity() {
                             etERuta.setText(""+doc["ruta"])
                             lugarPartida = doc["partida"] as GeoPoint
                             etEPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
-                            //TODO Finish ProfileEditActivity
-                            //TODO Add updating firebase info
                             break
                         }
                     }
@@ -76,7 +76,13 @@ class ProfileEditActivity : AppCompatActivity() {
             if(data != null){
                 lugarPartida = GeoPoint(data.getDoubleExtra("lat", 0.0),
                         data.getDoubleExtra("lng", 0.0))
-                etEPartida.setText(String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude))
+                zonasID = data.getStringArrayListExtra("zonasID")!!
+                zonasTags = data.getStringArrayListExtra("zonasTags")!!
+                var newString = String.format("%s, %s", lugarPartida.latitude, lugarPartida.longitude)
+                for(i in 0 until zonasID.size){
+                    newString = newString+zonasTags+"\n"
+                }
+                etEPartida.setText(newString.trim())
             }
         }
     }
@@ -113,10 +119,12 @@ class ProfileEditActivity : AppCompatActivity() {
         }else{
             val intentResult = Intent()
             val bundleResult = Bundle()
+
             bundleResult.putString("name", etENombre.text.toString())
             bundleResult.putString("celular", etECelular.text.toString())
             bundleResult.putDouble("lat", lugarPartida.latitude)
             bundleResult.putDouble("lng", lugarPartida.longitude)
+            bundleResult.putStringArrayList("zonasID", zonasID)
             if(etEPlaca.text != null)
                 bundleResult.putString("placa", etEPlaca.text.toString())
             if(etERuta.text != null)

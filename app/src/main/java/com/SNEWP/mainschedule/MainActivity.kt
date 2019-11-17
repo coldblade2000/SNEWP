@@ -16,6 +16,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.nio.file.Path
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener {
@@ -137,7 +139,8 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                     extras.getString("celular"),
                     time.hours, time.minutes,
                     extras.getDouble("lat"),
-                    extras.getDouble("lng")
+                    extras.getDouble("lng"),
+                    arrayListOf<String>()
                     )
 
 
@@ -145,15 +148,20 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
             val auth = FirebaseAuth.getInstance()
             val user = auth.currentUser
             val db = FirebaseFirestore.getInstance()
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(data?.getStringExtra("name"))
+                    .build()
+
+            user?.updateProfile(profileUpdates)
             if(data!=null && user!=null){
                 assert(user.phoneNumber == data.getStringExtra("celular"))
-
                 val map = mapOf<String, Any>(
                         "nombre" to data.getStringExtra("name") as String,
                         "celular" to user.phoneNumber!!,
                         "partida" to GeoPoint(data.getDoubleExtra("lat", 0.0), data.getDoubleExtra("lng", 0.0)),
                         "placa" to data.getStringExtra("placa"),
-                        "ruta" to data.getStringExtra("ruta")
+                        "ruta" to data.getStringExtra("ruta"),
+                        "zonasID" to data.getStringArrayListExtra("zonasID")
                 )
                 db.collection("usuarios").document(user.uid).set(map)
                         .addOnSuccessListener {

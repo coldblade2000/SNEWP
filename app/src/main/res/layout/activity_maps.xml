@@ -30,4 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <include
+        layout="@layout/fragment_zona_list_dialog" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Apunte {
@@ -20,8 +21,10 @@ public class Apunte {
     private double lat;
     private double lng;
     private String route;
+    private ArrayList<String> zonesID;
 
-    public Apunte(String name, String accountId, String phoneNumber, int startHour, int startMinute, double lat, double lng){
+    public Apunte(String name, String accountId, String phoneNumber,
+                  int startHour, int startMinute, double lat, double lng, ArrayList<String> zonesID){
         this.name = name;
         this.accountId = accountId;
         this.phoneNumber = phoneNumber.trim().replaceAll("\\s+","");
@@ -29,6 +32,7 @@ public class Apunte {
         this.lng = lng;
         this.startHour = startHour;
         this.startMinute = startMinute;
+        this.zonesID= zonesID;
     }
     public Apunte(HashMap<String, Object> map){
         name = (String) map.get("name");
@@ -44,6 +48,7 @@ public class Apunte {
             route = (String) map.get("route");
         if(map.get("plates") != null)
             plates = (String) map.get("plates");
+        zonesID = (ArrayList<String>) map.get("zonesID");
     }
 
 

@@ -107,6 +107,7 @@ class PathChoserActivity : AppCompatActivity(), View.OnClickListener {
                 intentResult.putExtra("lng", data.getDoubleExtra("lng", -1.0))
                 intentResult.putExtra("placa", data.getStringExtra("placa"))
                 intentResult.putExtra("ruta", data.getStringExtra("ruta"))
+                intentResult.putExtra("zonasID", data.getStringArrayListExtra("zonasID"))
 
 
                 setResult(NEW_PROFILE_SUCCESS, intentResult)
