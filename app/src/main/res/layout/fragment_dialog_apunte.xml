@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorHeader">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbZoneDiag"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/zone_dialog_menu"
+        app:title="Apunte"
+        app:titleTextColor="@color/colorAccent" />
+
+    <LinearLayout
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:maxWidth="300dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbZoneDiag">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiDNombre"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:drawableStart="@drawable/ic_person_outline_black_24dp"
+                android:drawablePadding="4dp"
+                android:hint="Nombre"
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:text="Josue Ronis David" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiDHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDHora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_access_time_black_24dp"
+                android:drawablePadding="4dp"
+                android:enabled="false"
+
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Hora"
+                android:inputType="none"
+                android:text="12:46 PM" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiDPlaca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDPlaca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_plates2"
+                android:drawablePadding="4dp"
+                android:hint="Placa"
+                android:enabled="false"
+
+                android:inputType="textCapCharacters"
+                android:maxLength="6" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiDRuta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDRuta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_path_black_24dp"
+                android:drawablePadding="4dp"
+                android:hint="La ruta que tomaras"
+                android:enabled="false"
+
+                android:inputType="textPersonName"
+                android:singleLine="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/bPartidaDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_map_black_24dp"
+            android:text="Ver punto de partida" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

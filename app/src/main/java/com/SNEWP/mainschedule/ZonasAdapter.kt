@@ -4,19 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 import kotlin.collections.ArrayList
 
-class ZonasAdapter(private val myDataset: ArrayList<Zona>, val context:Context, val mInterface: mapsInterface) :
+class ZonasAdapter(private val myDataset: ArrayList<Zona>, val context:Context, val mInterface: zonasAdapInterface) :
         RecyclerView.Adapter<ZonasAdapter.ViewHolder>(){
 
-    interface mapsInterface{
+    interface zonasAdapInterface{
         fun onZoneSelection(position: Int, boolean: Boolean)
     }
     val checkedZones = arrayListOf<Zona>()
-    class ViewHolder(val checkBox: CheckBox, val context : Context, val mInterface: mapsInterface) : RecyclerView.ViewHolder(checkBox)
+    class ViewHolder(val checkBox: CheckBox, val context : Context, val mInterface: zonasAdapInterface) : RecyclerView.ViewHolder(checkBox)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val checkBox = LayoutInflater.from(parent.context)
@@ -38,8 +36,12 @@ class ZonasAdapter(private val myDataset: ArrayList<Zona>, val context:Context, 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.setIsRecyclable(false)
         if(myDataset[position].checked != null){
             holder.checkBox.isChecked = myDataset[position].checked!!
+            if(myDataset[position].checked!!){
+                checkedZones.add(myDataset[position])
+            }
         }else{
             holder.checkBox.isChecked = false
             myDataset[position].checked = false
@@ -48,12 +50,12 @@ class ZonasAdapter(private val myDataset: ArrayList<Zona>, val context:Context, 
         holder.checkBox.setOnCheckedChangeListener{ _, isChecked ->
             myDataset[position].apply {
                 checked = isChecked
-                if(isChecked){
+                if(isChecked == true){
                     checkedZones.add(this)
-                    polygon.strokeWidth = 6F
+                    polygon?.strokeWidth = 6F
                 }else{
                     checkedZones.remove(this)
-                    polygon.strokeWidth = 0.5f
+                    polygon?.strokeWidth = 0.5f
                 }
             }
             mInterface.onZoneSelection(position, isChecked)

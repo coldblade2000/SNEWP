@@ -5,8 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import com.github.tlaabs.timetableview.Schedule
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +20,7 @@ import java.lang.Exception
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
@@ -56,6 +59,8 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                     }
                 }
 
+        dayPicker.selectedDays = listOf()
+
         etAHora.setOnClickListener {
             val picker = TimePickerDialog.newInstance(this, 8, 0,  false)
             picker.accentColor = ResourcesCompat.getColor(resources, R.color.colorPrimary, theme)
@@ -74,6 +79,11 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
 
     private fun addApunte(){
         var exception = false
+
+        if(dayPicker.noDaySelected()){
+            exception = true
+            tvDayError.visibility = View.VISIBLE
+        }
         if(etANombre.text.isNullOrBlank()){
             exception = true
             tiANombre.error = "Te falto poner un nombre"
@@ -94,20 +104,25 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         if(exception){
             Snackbar.make(clApunte, "Te falto completar los campos requeridos", Snackbar.LENGTH_SHORT)
         }else{
+            val selectedDays = dayPicker.selectedDays
+            val days : ArrayList<Int> = arrayListOf()
+            for(day in selectedDays){
+                days.add(Schedule.convertToScheduleDay(day))
+            }
             val intentResult = Intent()
-            intentResult.putExtra("name", etANombre.text)
-            intentResult.putExtra("celular", etACelular.text)
-            intentResult.putExtra("hora", etAHora.text)
-            intentResult.putExtra("partida", etAPartida.text)
+            intentResult.putExtra("name", etANombre.text.toString())
+            intentResult.putExtra("celular", etACelular.text.toString())
+            intentResult.putIntegerArrayListExtra("days", days)
+            intentResult.putExtra("hora", etAHora.text.toString())
             intentResult.putExtra("lat", lugarPartida.latitude)
             intentResult.putExtra("lng", lugarPartida.longitude)
             intentResult.putStringArrayListExtra("zonasID", zonasID)
 
             if(etAPlaca.text != null)
-                intentResult.putExtra("placa", etAPlaca.text)
+                intentResult.putExtra("placa", etAPlaca.text.toString())
             if(etARuta.text != null)
-                intentResult.putExtra("ruta", etARuta.text)
-            setResult(MainActivity.APUNTE_SUCCESS, intent)
+                intentResult.putExtra("ruta", etARuta.text.toString())
+            setResult(MainActivity.APUNTE_SUCCESS, intentResult)
             finish()
         }
     }

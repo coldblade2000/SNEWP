@@ -55,14 +55,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:orientation="vertical">
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiANombre"
                 android:layout_width="match_parent"
                 app:hintTextAppearance="@style/TextLabel"
+                android:paddingTop="8dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -81,6 +84,7 @@
                 android:id="@+id/tiACelular"
                 android:layout_width="match_parent"
                 app:hintTextAppearance="@style/TextLabel"
+                android:paddingTop="8dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -93,11 +97,33 @@
                     android:hint="Celular*"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
+            <com.dpro.widgets.WeekdaysPicker
+                android:id="@+id/dayPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:background_color="@color/colorPrimary"
+                app:highlight_color="@color/colorAccent"
+                app:text_color="@color/colorPrimary"
+                app:show_weekend="false"
+                app:sunday_first_day="false">
+
+            </com.dpro.widgets.WeekdaysPicker>
+
+            <TextView
+                android:id="@+id/tvDayError"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingStart="8dp"
+                android:text="Debes seleccionar algun dia"
+                android:textAppearance="@style/TextAppearance.Design.Error"
+                android:visibility="gone" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiAHora"
                 android:layout_width="match_parent"
                 app:hintTextAppearance="@style/TextLabel"
+                android:paddingTop="8dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -116,6 +142,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clAPartida"
                 android:layout_width="match_parent"
+                android:paddingTop="8dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -163,6 +190,7 @@
                 android:id="@+id/tiAPlaca"
                 android:layout_width="match_parent"
                 app:hintTextAppearance="@style/TextLabel"
+                android:paddingTop="8dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -172,7 +200,7 @@
                     android:drawableStart="@drawable/ic_plates2"
                     android:drawablePadding="4dp"
                     android:hint="Placa"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapCharacters"
                     android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -180,6 +208,7 @@
                 android:id="@+id/tiARuta"
                 android:layout_width="match_parent"
                 app:hintTextAppearance="@style/TextLabel"
+                android:paddingTop="8dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -153,7 +153,7 @@
                     android:drawableStart="@drawable/ic_plates2"
                     android:drawablePadding="4dp"
                     android:hint="Placa"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapCharacters"
                     android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 

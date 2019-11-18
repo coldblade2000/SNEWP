@@ -24,10 +24,18 @@
         android:id="@+id/fabMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        app:layout_anchor="@+id/vHeader"
+        app:layout_anchorGravity="top|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_note_add_black_24dp" />
+    <!--        android:layout_gravity="bottom|end"-->
 
-    <include layout="@layout/content_main" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainFragmentFrame" />
+
+    <include
+        layout="@layout/fragment_zona_list_dialog" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

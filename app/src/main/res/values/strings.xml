@@ -19,4 +19,5 @@
     <string name="confirmar">Confirmar</string>
     <string name="imagen_de_conductor">Imagen de conductor</string>
     <string name="pathChooseDisclaimer">Para poder apuntarte como conductor de Wheels, deberas iniciar sesion con tu numero telefonico</string>
+    <string name="title_activity_map_apunte_view">Map</string>
 </resources>

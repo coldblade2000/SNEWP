@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.fragment_zona_list_dialog.*
 import kotlin.collections.ArrayList
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ZonasAdapter.mapsInterface{
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ZonasAdapter.zonasAdapInterface{
 
     override fun onZoneSelection(position: Int, boolean: Boolean) {
         if(boolean){
@@ -77,6 +77,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ZonasAdapter.mapsI
         requestCode = intent.getIntExtra("requestcode", ProfileEditActivity.PEA_REQUEST_MAP)
         tbMaps.title = "Escoge punto de partida"
         setSupportActionBar(tbMaps)
+
+        tvZonasCount.text = (String.format("%s zonas seleccionadas", selectedCount))
 
         db = FirebaseFirestore.getInstance()
         db.collection("zonas")
