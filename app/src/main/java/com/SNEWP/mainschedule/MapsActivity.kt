@@ -250,6 +250,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, ZonasAdapter.zonas
                     if(task.isSuccessful){
                         if (task.result != null) {
                             val mLastKnownLocation = task.result
+                            mMap.isMyLocationEnabled = true
+                            mMap.uiSettings.isMyLocationButtonEnabled = true
                             lat = mLastKnownLocation!!.latitude
                             lng = mLastKnownLocation.longitude
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(

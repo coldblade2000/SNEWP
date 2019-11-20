@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -52,6 +53,8 @@ public class TimetableView extends LinearLayout {
     TableLayout tableBox;
 
     private Context context;
+
+    private ArrayList<Schedule> allSchedules = new ArrayList<>();
 
     HashMap<Integer, Sticker> stickers = new HashMap<Integer, Sticker>();
     private int stickerCount = -1;
@@ -147,11 +150,16 @@ public class TimetableView extends LinearLayout {
         add(schedules, -1);
     }
 
+
+
     private void add(final ArrayList<Schedule> schedules, int specIdx) {
         final int count = specIdx < 0 ? ++stickerCount : specIdx;
         Sticker sticker = new Sticker();
+        allSchedules.add(schedules.get(0));
         for (Schedule schedule : schedules) {
             TextView tv = new TextView(context);
+            String msg = String.format("Count: %s   scheduleName: %s  scheduleDay: %s  scheduleID: %s", count, schedule.getClassTitle(), schedule.getDay(), schedule.getId());
+            Log.d("TimetableView", msg);
 
             RelativeLayout.LayoutParams param = createStickerParam(schedule);
             tv.setLayoutParams(param);
@@ -165,7 +173,7 @@ public class TimetableView extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     if(stickerSelectedListener != null)
-                        stickerSelectedListener.OnStickerSelected(count, schedules);
+                        stickerSelectedListener.OnStickerSelected(count, allSchedules);
                 }
             });
 
@@ -177,11 +185,7 @@ public class TimetableView extends LinearLayout {
         setStickerColor();
     }
 
-    public void add(Schedule schedule) {
-        ArrayList<Schedule> schedules = new ArrayList<>();
-        schedules.add(schedule);
-        add(schedules);
-    }
+
 
     public String createSaveData() {
         return SaveManager.saveSticker(stickers);

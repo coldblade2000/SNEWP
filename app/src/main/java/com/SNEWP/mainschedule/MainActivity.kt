@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
             }
             db.collection("usuarios").document(user.uid).get()
                     .addOnSuccessListener { result ->
-                        zonasID = result.get("zonasID") as ArrayList<String>
+                        if(result.get("zonasID")!=null)
+                            zonasID = result.get("zonasID") as ArrayList<String>
                         val fragmentTransaction = supportFragmentManager.beginTransaction()
                         val fragment = ScheduleFragment.newInstance(zonasID)
                         fragmentTransaction.add(R.id.mainFragmentFrame, fragment)
@@ -160,6 +161,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
             }
 
             bZonaConfirm.setOnClickListener {
+                Toast.makeText(this, "Actualizando zonas", Toast.LENGTH_SHORT).show()
                 val checkedZonasIDs = arrayListOf<String>()
                 val zonasTags = arrayListOf<String>()
                 zonasAdapter.checkedZones.forEachIndexed{i,zone ->
@@ -167,6 +169,21 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                     zonasTags.add(zone.nombresAsString)
                 }
                 zonas = arrayListOf<Zona>()
+
+                var tempMap = mutableMapOf<String, Any>()
+
+                db.collection("usuarios").document(user.uid).get()
+                        .addOnSuccessListener { result ->
+                            if(result.data!=null)
+                                tempMap = result.data!!
+                            if(result.get("zonasID")!=null)
+                                zonasID = result.get("zonasID") as ArrayList<String>
+
+                        }
+                tempMap.set("zonasID", zonasID)
+                db.collection("usuarios").document(user.uid).set(tempMap)
+                        .addOnSuccessListener {  }
+
                 db.collection("zonas")
                         .get()
                         .addOnSuccessListener { result ->
@@ -257,6 +274,10 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         if (id == R.id.action_settings) {
             return true
         } else if (id == R.id.signout){
+            val db = FirebaseFirestore.getInstance()
+            db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser?.uid!!).delete()
+                    .addOnSuccessListener {  }
+
             AuthUI.getInstance().signOut(this).addOnSuccessListener { Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show() }
             finishAndRemoveTask()
             return true
@@ -359,6 +380,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
                             Toast.makeText(this, "Se produjo un" +
                                 " error al sincronizar el perfil. Vuelve a intentar", Toast.LENGTH_LONG).show() }
             }
+
         }
     }
     override fun onFragmentInteraction(apunte: Apunte) {

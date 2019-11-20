@@ -154,7 +154,10 @@ public class ScheduleFragment extends Fragment {
         timetable.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
             @Override
             public void OnStickerSelected(int idx, ArrayList<Schedule> schedules) {
-                Schedule schedule = schedules.get(idx-1);
+                if(idx == 0){
+                    idx++;
+                }
+                Schedule schedule = schedules.get(idx);
                 for(Apunte a: apuntes){
                     if(a.getApunteID().equals(schedule.getId())){
                         Toast.makeText(getContext(), "Found apunte!" + a.getName(), Toast.LENGTH_SHORT).show();
@@ -197,9 +200,6 @@ public class ScheduleFragment extends Fragment {
         return scheduleArrayList;
     }
 
-    public void addSchedule(Schedule schedule){
-        timetable.add(schedule);
-    }
 
     private ArrayList<Schedule> debugSchedule(){
         String[] names = {"Daniela Espinosa", "Pablo Brito", "David Beckham", "Tim Berners-lee"};

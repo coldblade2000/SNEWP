@@ -1,2 +1,3 @@
-include ':app', ':TimetableView'
+include ':app'
+include ':TimetableView'
 rootProject.name='SNEWP'

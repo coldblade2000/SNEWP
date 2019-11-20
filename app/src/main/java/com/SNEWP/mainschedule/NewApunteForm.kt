@@ -50,10 +50,13 @@ class NewApunteForm : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                             etACelular.setText(user.phoneNumber)
                             etAPlaca.setText(""+doc["placa"])
                             etARuta.setText(""+doc["ruta"])
-                            lugarPartida = doc["partida"] as GeoPoint
-                            etAPartida.setText(String.format("%s, %s",
-                                    lugarPartida.latitude.toString().substring(0,6),
-                                    lugarPartida.longitude.toString().substring(0,7)))
+                            if(doc["partida"]!=null) {
+                                lugarPartida = doc["partida"] as GeoPoint
+                                etAPartida.setText(String.format("%s, %s",
+                                        lugarPartida.latitude.toString().substring(0,6),
+                                        lugarPartida.longitude.toString().substring(0,7)))
+                            }
+
                             break
                         }
                     }
